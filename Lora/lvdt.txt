@@ -1,0 +1,80 @@
+#include <Wire.h>
+#include <Adafruit_ADS1X15.h>
+
+Adafruit_ADS1115 ads;
+
+#define SDA_PIN 42
+#define SCL_PIN 2
+int ch=0;
+int samplecount = 100;
+int adcmin=0;
+int adcmax=27300;
+const float minvtg = 0.0f;
+const float maxvtg = 5.12f;
+const float maxdisplacement = 600.0f;
+
+void setup()
+{
+    Serial.begin(115200);
+    delay(1000);
+
+    Wire.begin(SDA_PIN, SCL_PIN);
+
+    if (!ads.begin(0x48))
+    {
+        Serial.println("ADS1115 not found!");
+        while (1);
+    }
+
+    // ADS1115 range: +/- 6.144 V
+    ads.setGain(GAIN_TWOTHIRDS);
+
+    // 128 samples per second
+    ads.setDataRate(RATE_ADS1115_128SPS);
+
+    Serial.println("ADS1115 initialized"); 
+}
+
+void loop()
+{
+    long adcSum = 0; 
+
+    // Take 1000 ADC samples
+    for (int i = 0; i < samplecount; i++)
+    {
+        adcSum += ads.readADC_SingleEnded(ch);
+    }
+
+    // Average ADC value
+    float adcAverage = (float)adcSum / samplecount;
+    float adcdiss=adcAverage*maxdisplacement/adcmax;
+    float adcvtg=adcAverage*maxvtg/adcmax;
+
+    float computevoltage = ads.computeVolts((int16_t)adcAverage);
+   float vtgdiss=computevoltage*maxdisplacement/maxvtg;
+
+    // Limit ADC displacement
+    if (adcdiss < 0) adcdiss = 0;
+    if (adcdiss > maxdisplacement) adcdiss = maxdisplacement;
+    // Limit voltage displacement
+    if (vtgdiss < 0)vtgdiss = 0;
+    if (vtgdiss > maxdisplacement) vtgdiss = maxdisplacement;
+
+    Serial.print("ADC Avg = ");
+    Serial.print(adcAverage, 2);
+
+    Serial.print(" :adc vtg = ");
+    Serial.print(adcvtg, 2);
+    Serial.print(" V");
+    Serial.print(" :adc diss = ");
+    Serial.print(adcdiss, 2);
+    Serial.print(" mm");
+
+    Serial.print(" : com vtg = ");
+    Serial.print(computevoltage, 2);
+    Serial.print(" V");
+    Serial.print(" :vtg diss = ");
+    Serial.print(vtgdiss, 2);
+    Serial.println(" mm");
+    delay(100);
+}
