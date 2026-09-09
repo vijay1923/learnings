@@ -1,0 +1,29 @@
+1. User space vs Kernel space
+2. Explain Linux kernel architecture
+3. Different between character & block device driver
+4. What is character device file? And why it is used?
+5. What is block device file? And why it is used?
+6. How to see the list of character & block device files?
+7. Explain given commands:
+insmod, rmmod, lsmod, modinfo, dmesg
+8. insmod vs modprobe
+9. What is the role of init & exit function in the device driver?
+10. What is __init & __exit? And Why it is necessary in the init & exit function definitions. 
+11. Explain character device driver programming steps.
+12. Explain file operations in kernel space.
+13. Explain how to communicate between user space & kernel space.
+14. copy_to_user vs copy_from_user 
+15. Explain IOCTL & how to create commands using IOCTL.
+16. What is Major & Minor number?
+17. How to see the list of major & minor num in the Linux?
+18. Explain Linux bootup process.
+19. Explain interrupt handling & how to declare ISR?
+20. What is jiffies? 
+21. Explain about /proc , /sys & /dev directories.
+22. Which cross-compiler you have used for cross-compilation?
+23. What is yocto / buildroot?
+24. How to build your own Linux for target SBC?
+25. What is SBC? And which SBC used for your programming?
+26. Do you know any other SBC than Rasperry Pi?
+27. Explain kernel compilation steps.
+28. Explain porting of Linux kernel & why it is necessary?
