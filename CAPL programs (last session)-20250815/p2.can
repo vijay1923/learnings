@@ -1,0 +1,39 @@
+/*@!Encoding:1252*/
+/*nodeA CAPL
+  Send DF given below to control LED
+  status in nodeB
+  ID:0x123, 
+  byte(0)=0x11 --> LED ON 
+  byte(0)=0x12 --> LED OFF 
+*/
+variables{
+  message 0x123 m1;//headlight control
+  message 0x150 m2;//right indi control
+}
+
+on sysvar `SWITCH::sysvarSW1{
+  m1.rtr=0;
+  m1.dlc=1;
+  if(@`SWITCH::sysvarSW1==1)//if sw pressed    
+    m1.byte(0)=0x11;//HL ON in nodeB
+  else//if sw released
+    m1.byte(0)=0x12;//HL OFF in nodeB
+  
+  output(m1);//send data-frame 
+  write("nodeA: data-frame is sent");
+}
+
+/*nodeA*/
+on sysvar `SWITCH::sysvarR_Indi{
+  m2.dlc=1;
+  m2.rtr=0;
+  if(@`SWITCH::sysvarR_Indi==1)
+    m2.byte(0)=0x11;//right indi blink in nodeB  
+  else
+    m2.byte(0)=0x12;//stop right indi 
+  
+  output(m2);//send data-frame to nodeB
+}
+
+
+

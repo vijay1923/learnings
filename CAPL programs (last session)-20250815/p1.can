@@ -1,0 +1,58 @@
+/*@!Encoding:1252*/
+/*p1.can*/
+
+variables{
+  message 0x123 m1;//global var
+  message * m2;//global var
+}
+
+on sysvar `SWITCH::sysvarSW1{
+  if(@`SWITCH::sysvarSW1==1){
+   m1.rtr=0;
+   m1.dlc=2;
+   m1.byte(0)=0x11;//1st byte of data
+   m1.byte(1)=0x22;//2nd byte of data
+   output(m1);//send std data-frame
+   write("data-frame is sent\n");
+  }
+}
+
+on sysvar `SWITCH::sysvarSW2{
+  if(@`SWITCH::sysvarSW2==1){
+   m2.id=0xAB;
+   m2.rtr=1;
+   m2.dlc=6;
+   output(m2);//send std remote-frame
+   write("remote-frame is sent\n");
+  }
+}
+
+
+on key 'a'{  
+  m1.rtr=0;
+  m1.dlc=2;
+  m1.byte(0)=0x11;//1st byte of data
+  m1.byte(1)=0x22;//2nd byte of data
+  output(m1);//send std data-frame
+  write("data-frame is sent\n");
+}
+
+on key 'b'{  
+  m2.id=0xAB;
+  m2.rtr=1;
+  m2.dlc=6;
+  output(m2);//send std remote-frame
+  write("remote-frame is sent\n");
+}
+
+
+on start
+{
+  write("Hello World!!!");
+}
+
+on preStop
+{
+  write("Bye");
+}
+

@@ -1,0 +1,17 @@
+/*@!Encoding:1252*/
+/*p1.can*/
+includes{}
+
+variables{}
+
+on start
+{
+  write("Hello World!!!");
+}
+
+on preStop
+{
+  write("Bye Bye");
+}
+
+

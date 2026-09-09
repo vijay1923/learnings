@@ -1,0 +1,31 @@
+/*@!Encoding:1252*/
+includes{}
+
+variables{
+  msTimer t1;
+  int flag=0;
+}
+
+on message R_INDI_msg{
+  if(this.byte(0)==0x11){//r indi blink
+    @LCM::sysvarR_INDI_LED=1;
+    setTimer(t1,250);//250ms timer
+  }
+  else if(this.byte(0)==0x12){//stop
+    @LCM::sysvarR_INDI_LED=0;//r indi off
+    cancelTimer(t1);
+  }
+  else
+    write("wrong command received");
+}
+
+on timer t1{
+ flag^=1;
+  if(flag)
+    @LCM::sysvarR_INDI_LED=0;//off
+  else
+    @LCM::sysvarR_INDI_LED=1;
+  
+  setTimer(t1,250);
+}
+

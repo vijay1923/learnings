@@ -1,0 +1,35 @@
+/*@!Encoding:1252*/
+/*nodeB CAPL
+  Timer event handling basic prog
+*/
+  
+variables{
+  msTimer t1;
+}
+
+on timer t1{ //timer event handler
+  write("t1 timer event occured"); 
+}
+
+on message 0x150{//right indicator msg
+  setTimer(t1,1000);//timeout: 1sec  
+  write("in nodeB: timer is set");
+}
+
+  
+on message 0x123{
+  if(this.rtr==0){
+    switch(this.byte(0)){
+      case 0x11: @LED::sysvarLED=1; 
+                  break;//LED ON 
+      case 0x12: @LED::sysvarLED=0; 
+                  break;//LED OFF  
+    }    
+  }
+  
+}
+
+
+
+
+

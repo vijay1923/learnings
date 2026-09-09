@@ -1,0 +1,28 @@
+/*@!Encoding:1252*/
+/*nodeA BCM*/
+includes{}
+
+variables{
+  message HL_msg hl;
+  message R_INDI_msg r_indi;
+  message L_INDI_msg l_indi;
+}
+
+on sysvar BCM::sysvarHL_SW{
+  
+}
+
+on sysvar BCM::sysvarR_INDI_SW{
+  r_indi.rtr=0;
+  r_indi.dlc=1;
+  if(@BCM::sysvarR_INDI_SW==1)
+    r_indi.byte(0)=0x11;//r_indi blink in nodeB
+  else
+    r_indi.byte(0)=0x12;//r_indi stop in nodeB
+  
+  output(r_indi);
+  write("nodeA BCM: Right Indi Control DF is sent");
+}
+
+
+
